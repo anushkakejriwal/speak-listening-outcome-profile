@@ -1,0 +1,227 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Speak Profile Progress</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one phone-sized column, centered, two screens swapped in place. Single light look on purpose, to match the app being mocked. */
+:root{--ground:#DFE2EA;--screen:#F3F4F8;--card:#FFFFFF;--ink:#0E0E10;--muted:#6B6E76;--soft:#8A8D95;--blue:#1F44FF;--tint:#C9D3FF;--green:#5BBF97;--good:#0B7A57;--violet:#8B6CEF;--rose:#DA4C68;--peach:#FBE3D2;--line:#E3E6EC;--rule:#EEF0F4;--font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+html,body{background:var(--ground);color:var(--ink)}
+body{font-family:var(--font);padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:393px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.note{margin:0;font-size:13px;line-height:19px;color:var(--muted);text-align:center}
+.phone{background:var(--screen);border-radius:40px;padding:20px 16px 16px;display:flex;flex-direction:column;box-sizing:border-box;box-shadow:0 0 0 1px var(--line)}
+p,h1,h2{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.card{background:var(--card);border-radius:30px;box-shadow:0 1px 2px rgba(20,30,60,.06),0 0 0 1px var(--rule)}
+.ic{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}
+.ttl{font-size:19px;line-height:24px;font-weight:600}
+.sub{font-size:15px;line-height:21px;color:var(--muted)}
+.caps{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+
+/* ---------- Profile ---------- */
+.gear{align-self:flex-end;width:44px;height:44px;border-radius:50%;border:0;background:var(--card);box-shadow:0 0 0 1px var(--line);display:flex;align-items:center;justify-content:center;color:#4A4D55}
+.name{text-align:center;font-size:34px;line-height:40px;font-weight:700;margin-top:28px}
+.meta{text-align:center;font-size:17px;line-height:25px;color:var(--soft);margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center;margin-top:26px}
+.stats svg{display:block;margin:0 auto 6px}
+.stats b{display:block;font-size:20px;line-height:26px;font-weight:600}
+.list{margin-top:30px;overflow:hidden}
+.row{display:flex;align-items:center;gap:16px;padding:17px 18px;width:100%;border:0;background:transparent;text-align:left;box-sizing:border-box}
+.row+.row{border-top:1px solid var(--rule)}
+.row .tx{flex:1;min-width:0}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:34px 8px 12px;font-size:17px;font-weight:600;color:var(--soft)}
+.sec span{color:var(--blue)}
+.course{padding:18px;display:flex;gap:14px}
+.av{flex:none;position:relative;width:60px;height:60px;border-radius:50%;background:#E9EAEE;display:flex;align-items:center;justify-content:center;color:#A9ADB6}
+.av i{position:absolute;left:-6px;right:-6px;bottom:-9px;background:var(--blue);color:#fff;font-style:normal;font-size:11px;font-weight:700;letter-spacing:.04em;text-align:center;border-radius:10px;padding:2px 0}
+.bar{margin-top:10px;height:6px;border-radius:3px;background:#E9EAEE}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--blue)}
+.tabs{position:sticky;bottom:12px;margin-top:28px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:5px;background:rgba(255,255,255,.96);border-radius:36px;box-shadow:0 0 0 1px var(--line),0 6px 18px rgba(20,30,60,.10);font-size:11px;font-weight:600;text-align:center}
+.tabs span{min-height:54px;border-radius:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.tabs .on{background:#E9EAEE;color:var(--blue)}
+
+/* ---------- Your speaking ---------- */
+#speaking{gap:0;padding-bottom:28px}
+.back{width:44px;height:44px;margin-left:-8px;border:0;background:transparent;display:flex;align-items:center;justify-content:center}
+.page{font-size:34px;line-height:40px;font-weight:700;margin:10px 4px 22px}
+h2{font-size:24px;line-height:30px;font-weight:700;margin:40px 4px 6px}
+.lead{font-size:15px;line-height:21px;color:var(--muted);margin:0 4px 16px}
+.hero{padding:24px}
+.goal{font-size:19px;line-height:24px;font-weight:600;margin-top:4px}
+.pct{display:flex;align-items:baseline;gap:10px;margin-top:22px}
+.pct b{font-size:60px;line-height:60px;font-weight:700;letter-spacing:-.02em}
+.pct span{font-size:22px;font-weight:600}
+.meter{height:10px;border-radius:5px;background:#E9EAEE;margin-top:16px}
+.meter i{display:block;width:20%;height:100%;border-radius:5px;background:var(--blue)}
+.hero .sub{font-size:16px;line-height:23px;margin-top:14px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.tile{padding:20px 20px 18px}
+.tile b{display:block;font-size:26px;line-height:32px;font-weight:600}
+.tile .caps{margin-top:6px}
+.legend{display:flex;gap:18px;margin:0 4px 14px;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.sit{padding:20px 22px}
+.sit+.sit{border-top:1px solid var(--rule)}
+.sit .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.split{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--tint);margin-top:14px}
+.split i{display:block;background:var(--blue)}
+.nums{display:flex;justify-content:space-between;margin-top:10px;font-size:15px;color:var(--muted)}
+.nums b{color:var(--ink);font-weight:600}
+.pill{flex:none;font-size:13px;font-weight:600;color:var(--muted);background:#ECEEF3;border-radius:14px;padding:6px 12px}
+.next .ttl{color:var(--soft);font-weight:500}
+.item{display:flex;gap:16px;padding:22px}
+.item+.item{border-top:1px solid var(--rule)}
+.item .tx{flex:1;min-width:0}
+.item .sub{font-size:16px;line-height:23px;margin-top:6px}
+.acts{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.acts button{min-height:44px;padding:0;border:0;background:transparent;font-size:16px}
+.acts .go{color:var(--blue);font-weight:600}
+.acts .no{color:var(--soft);font-size:15px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.metric{padding:24px 22px 22px}
+.metric .sub{font-size:15px;line-height:22px;margin-top:6px}
+.metric .chart{display:block;width:100%;height:auto;margin-top:14px}
+.metric text{font-family:var(--font)}
+.val{font-size:14px;font-weight:600;fill:var(--ink)}
+.wk{font-size:12px;fill:var(--muted)}
+.gain svg{flex:none}
+.gain{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:16px;font-weight:600;color:var(--good)}
+.lock .ttl{color:var(--ink)}
+.cta{min-height:58px;border:0;border-radius:29px;background:var(--blue);color:#fff;font-size:18px;font-weight:500;margin-top:36px}
+.how{display:flex;align-items:center;gap:10px;margin-top:20px;padding:10px 6px;min-height:44px;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;color:var(--muted);width:100%}
+.foot{display:flex;justify-content:center;gap:28px;margin-top:8px}
+.foot button{min-height:44px;padding:0;border:0;background:transparent;color:var(--blue);font-size:16px;font-weight:500}
+</style>
+<div class="wrap">
+<p class="note">Concept by Anushka Kejriwal. Not affiliated with Speak.</p>
+
+<div class="phone" id="profile">
+  <button class="gear" type="button" aria-label="Settings"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+  <h1 class="name">Anushka</h1>
+  <p class="meta">Joined Nov 15, 2026<br>Premium Member</p>
+  <div class="stats">
+    <div><svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44"><path d="M22 3c11 0 20 8 20 18s-9 18-20 18c-3 0-6-.6-8.600-1.700L3 41l2.800-9C3.400 29 2 25.200 2 21 2 11 11 3 22 3z" fill="#8B6CEF"/><text x="22" y="34" text-anchor="middle" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#fff">”</text></svg><b>68</b><span class="caps">Sentences<br>lifetime</span></div>
+    <div><svg aria-hidden="true" width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="20" fill="#5BBF97"/><path d="M22 11v12l8 5" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>25 min</b><span class="caps">Time<br>studied</span></div>
+    <div><svg aria-hidden="true" width="44" height="44" viewBox="0 0 24 24"><defs><linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC23C"/><stop offset="1" stop-color="#FF6F4E"/></linearGradient></defs><path d="M12 1.500c1 4.500 6.500 6.500 6.500 12.500a6.500 6.500 0 0 1-13 0c0-3 1.500-4.800 2.700-6.300.4 2 1.300 3.100 2 3.300.6-3.200-.6-6.300 1.800-9.500z" fill="url(#fl)"/><path d="M12 13c1.800 2 2.600 3.200 2.600 4.600a2.600 2.600 0 0 1-5.200 0c0-1.400.8-2.600 2.600-4.600z" fill="#FFD9C9"/></svg><b>1 day</b><span class="caps">Longest<br>streak</span></div>
+  </div>
+  <div class="card list">
+    <button class="row" id="open" type="button">
+      <span class="ic" style="background:var(--blue)" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 4 3 7-8"/></svg></span>
+      <span class="tx"><span class="ttl" style="display:block">Your speaking</span><span class="sub">See how you're getting better</span></span>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A8D95" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <div class="row"><span class="ic" style="background:var(--peach)" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 1.500c1 4.500 6.500 6.500 6.500 12.500a6.500 6.500 0 0 1-13 0c0-3 1.500-4.800 2.700-6.300.4 2 1.300 3.100 2 3.300.6-3.200-.6-6.300 1.800-9.500z" fill="url(#fl)"/></svg></span><div class="tx"><p class="ttl">Streak &amp; calendar</p><p class="sub">You are on a streak!</p></div></div>
+    <div class="row"><span class="ic" style="background:var(--green)" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16v9H4z"/><path d="M3 7h18v4H3z"/><path d="M12 7v13"/><path d="M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/></svg></span><div class="tx"><p class="ttl">Gift a year of Speak</p><p class="sub">Help a friend grow their fluency</p></div></div>
+    <div class="row"><span class="ic" style="background:var(--green);font-size:24px;font-weight:700" aria-hidden="true">$</span><div class="tx"><p class="ttl">Refer a friend</p><p class="sub">Earn $10 per friend</p></div></div>
+  </div>
+  <p class="sec">Your courses <span>View all courses</span></p>
+  <div class="card course">
+    <span class="av" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.500"/><path d="M3.500 21c.8-4.500 4.200-6.500 8.500-6.500s7.700 2 8.500 6.500z"/></svg><i>CURRENT</i></span>
+    <div style="flex:1;min-width:0">
+      <p class="ttl">Beginner Survival Japanese Part 1</p>
+      <p class="sub" style="margin-top:4px">With Yumi-sensei</p>
+      <div class="bar" aria-hidden="true"><i style="width:9%"></i></div>
+      <p class="sub" style="margin-top:8px">9% complete</p>
+    </div>
+  </div>
+  <div class="tabs" aria-hidden="true">
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="9" width="3.500" height="6" rx="1.750"/><rect x="7.500" y="4" width="4" height="16" rx="2"/><rect x="13.500" y="8" width="3.500" height="8" rx="1.750"/><rect x="19" y="10" width="3" height="4" rx="1.500"/></svg>Home</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="4"/><path d="M1.500 20c.6-4 3.500-6 7.500-6s6.900 2 7.500 6z"/><path d="M17 5c1.500 1.500 1.500 4.500 0 6M19.500 3c2.800 2.800 2.800 7.200 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Free Talk</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13.500 2L5 13.500h5.500L9.500 22 18 10.500h-5.500z"/></svg>Practice</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v2h3v3a4 4 0 0 1-4 4h-.4A6 6 0 0 1 13 14.900V18h3v3H8v-3h3v-3.100A6 6 0 0 1 7.400 12H7a4 4 0 0 1-4-4V5h3zm0 4H5v1a2 2 0 0 0 1.200 1.800zm12 0v2.800A2 2 0 0 0 19 8V7z"/></svg>Challenge</span>
+    <span class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.500" r="4.500"/><path d="M3 21c.8-4.800 4.300-7 9-7s8.200 2.200 9 7z"/></svg>Profile</span>
+  </div>
+</div>
+
+<div class="phone" id="speaking" hidden>
+  <button class="back" id="back" type="button" aria-label="Back to profile"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h1 class="page">Your speaking</h1>
+
+  <div class="card hero">
+    <p class="caps">Your goal</p>
+    <p class="goal">Get by on a trip to Japan</p>
+    <p class="pct"><b>20%</b><span>trip-ready</span></p>
+    <div class="meter" role="img" aria-label="20 percent of the way to your goal"><i></i></div>
+    <p class="sub">You can say 24 of the 120 phrases a trip needs.</p>
+  </div>
+  <div class="tiles">
+    <div class="card tile"><b>2 of 8</b><p class="caps">Travel situations<br>you're ready for</p></div>
+    <div class="card tile"><b>6 weeks</b><p class="caps">Until trip-ready<br>at your pace</p></div>
+  </div>
+
+  <h2>By situation</h2>
+  <p class="lead">How often you said the phrase by yourself, and how often you needed the hint first.</p>
+  <div class="legend"><span><i style="background:var(--blue)"></i>Without a hint</span><span><i style="background:var(--tint)"></i>After a hint</span></div>
+  <div class="card">
+    <div class="sit">
+      <div class="top"><p class="ttl">Greetings</p></div>
+      <div class="split" role="img" aria-label="90 percent without a hint, 10 percent after a hint"><i style="width:90%"></i></div>
+      <div class="nums"><span><b>90%</b> without a hint</span><span><b>10%</b> after a hint</span></div>
+    </div>
+    <div class="sit">
+      <div class="top"><p class="ttl">Simple requests</p></div>
+      <div class="split" role="img" aria-label="60 percent without a hint, 40 percent after a hint"><i style="width:60%"></i></div>
+      <div class="nums"><span><b>60%</b> without a hint</span><span><b>40%</b> after a hint</span></div>
+    </div>
+    <div class="sit next">
+      <div class="top"><p class="ttl">At a convenience store</p><span class="pill">Next up</span></div>
+    </div>
+  </div>
+
+  <h2>How you speak Japanese</h2>
+  <p class="lead">Patterns from all your lessons so far.</p>
+  <p class="caps" style="margin:6px 6px 10px;color:var(--good)">Going well</p>
+  <div class="card">
+    <div class="item"><span class="ic" style="background:#2BC299" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg></span><div class="tx"><p class="ttl">Your greetings are solid</p><p class="sub">You got Konnichiwa and Mata ne right every time this week.</p></div></div>
+    <div class="item"><span class="ic" style="background:#2BC299" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg></span><div class="tx"><p class="ttl">You remember what you learned</p><p class="sub">Phrases from last week came out right 80% of the time when they came back this week.</p></div></div>
+  </div>
+  <p class="caps" style="margin:28px 6px 10px">What can be better</p>
+  <div class="card">
+    <div class="item"><span class="ic" style="background:var(--violet)" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.600-5.900"/><path d="M20 4v5h-5"/></svg></span><div class="tx"><p class="ttl">Finish your sentences</p><p class="sub">You stopped early 30% of the time. In Japanese the last word, desu, is what completes it.</p><div class="acts"><button class="go" type="button">Practice this, 2 min</button><button class="no" type="button">Not right?</button></div></div></div>
+    <div class="item"><span class="ic" style="background:var(--violet)" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.600-5.900"/><path d="M20 4v5h-5"/></svg></span><div class="tx"><p class="ttl">Stretch the long ō</p><p class="sub">You held it in arigatō 50% of the time. Give it two beats.</p><div class="acts"><button class="go" type="button">Practice this, 2 min</button><button class="no" type="button">Not right?</button></div></div></div>
+    <div class="item"><span class="ic" style="background:var(--violet)" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.600-5.900"/><path d="M20 4v5h-5"/></svg></span><div class="tx"><p class="ttl">Stay in Japanese</p><p class="sub">You switched to English 20% of the time. Try the Japanese even if you're unsure of it.</p><div class="acts"><button class="go" type="button">Practice this, 2 min</button><button class="no" type="button">Not right?</button></div></div></div>
+  </div>
+
+  <h2>Week over week</h2>
+  <p class="lead">Checked the same way every week, so you can see what's really changing.</p>
+  <div class="stack">
+    <div class="card metric">
+      <p class="ttl">How quickly you answer</p>
+      <p class="sub">The pause between the tutor finishing and you starting to speak.</p>
+      <svg role="img" aria-label="Pause before answering, by week: 3.5, 2.9, 2.4 and 2.0 seconds" class="chart" viewBox="0 0 320 124">
+        <path d="M40 34L120 51 200 65 280 76V98H40z" fill="#EEF1FF"/>
+        <path d="M40 34L120 51 200 65 280 76" fill="none" stroke="#1F44FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="34" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="120" cy="51" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="200" cy="65" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="280" cy="76" r="5.500" fill="#1F44FF"/>
+        <text class="val" x="40" y="20" text-anchor="middle">3.5</text><text class="val" x="120" y="37" text-anchor="middle">2.9</text><text class="val" x="200" y="51" text-anchor="middle">2.4</text><text class="val" x="280" y="60" text-anchor="middle">2.0</text>
+        <text class="wk" x="40" y="118" text-anchor="middle">Week 1</text><text class="wk" x="120" y="118" text-anchor="middle">Week 2</text><text class="wk" x="200" y="118" text-anchor="middle">Week 3</text><text class="wk" x="280" y="118" text-anchor="middle">This week</text>
+      </svg>
+      <p class="gain"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>2.0 seconds now, down from 3.5 seconds</p>
+    </div>
+    <div class="card metric">
+      <p class="ttl">Right on the first try</p>
+      <p class="sub">Out of all your answers that week, how many were right the first time, before any hint.</p>
+      <svg role="img" aria-label="Answers right on the first try, by week: 55, 60, 70 and 80 percent" class="chart" viewBox="0 0 320 124">
+        <path d="M40 69L120 62 200 48 280 34V98H40z" fill="#EEF1FF"/>
+        <path d="M40 69L120 62 200 48 280 34" fill="none" stroke="#1F44FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="69" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="120" cy="62" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="200" cy="48" r="4" fill="#fff" stroke="#1F44FF" stroke-width="2.500"/><circle cx="280" cy="34" r="5.500" fill="#1F44FF"/>
+        <text class="val" x="40" y="55" text-anchor="middle">55%</text><text class="val" x="120" y="48" text-anchor="middle">60%</text><text class="val" x="200" y="34" text-anchor="middle">70%</text><text class="val" x="280" y="19" text-anchor="middle">80%</text>
+        <text class="wk" x="40" y="118" text-anchor="middle">Week 1</text><text class="wk" x="120" y="118" text-anchor="middle">Week 2</text><text class="wk" x="200" y="118" text-anchor="middle">Week 3</text><text class="wk" x="280" y="118" text-anchor="middle">This week</text>
+      </svg>
+      <p class="gain"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>8 in 10 answers now, up from about 5 in 10</p>
+    </div>
+    <div class="card"><div class="row lock"><span class="ic" style="background:#D5D8DF" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><div class="tx"><p class="ttl">How long your answers are in Free Talk</p><p class="sub">Take Free Talk lessons to unlock</p></div></div></div>
+  </div>
+
+  <button class="cta" type="button">Practice finishing sentences, 2 min</button>
+  <button class="how" type="button"><span aria-hidden="true" style="display:flex;color:#6B6E76"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7.500v.010"/></svg></span><span style="flex:1;min-width:0"><span style="display:block;font-size:15px;line-height:20px;font-weight:600;color:#0E0E10">How we measure your speaking</span><span style="display:block;font-size:13px;line-height:18px">What counts, what doesn't, and how to correct us</span></span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A8D95" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
+</div>
+<script>
+const p=document.getElementById('profile'),s=document.getElementById('speaking');
+if(location.hash==='#speaking'){p.hidden=true;s.hidden=false}
+document.getElementById('open').onclick=()=>{p.hidden=true;s.hidden=false;scrollTo(0,0)};
+document.getElementById('back').onclick=()=>{s.hidden=true;p.hidden=false;scrollTo(0,0)};
+</script>
+
+</body></html>
